@@ -1,0 +1,179 @@
+:root {
+  --background-color: #121212;
+  --faded-color: #878787;
+  --hover-color: #545454;
+  --link-color: #69c1fc;
+  --terminal-color: #72ff47;
+  --text-color: #dedede;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background-color: #ededed;
+    --hover-color: #bfbfbf;
+    --link-color: #0081d6;
+    --terminal-color: #2dc200;
+    --text-color: #000;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background-color);
+  color: var(--text-color);
+  font-family: sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 1rem 1rem 10rem;
+}
+
+.unified {
+  color: #2e8fff;
+}
+
+header {
+  flex: 1 1 auto;
+  margin-right: 0.5rem;
+
+  & h1,
+  & p {
+    margin: 0.5rem 0;
+  }
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > img {
+    border-radius: 50%;
+    margin: 0 1rem 0.5rem 0;
+  }
+
+  & ul {
+    margin: 0;
+    padding: 0;
+
+    & li {
+      list-style: none;
+
+      & a {
+        align-items: center;
+        display: flex;
+        padding: 0.1rem;
+
+        & img {
+          padding-right: 0.25rem;
+        }
+      }
+    }
+  }
+}
+
+a,
+a:visited {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+a:focus,
+a:hover {
+  background: var(--hover-color);
+  box-shadow: 0 0 0.25rem 0.25rem var(--hover-color);
+}
+
+hr {
+  border-color: var(--faded-color);
+}
+
+h2 a,
+h3 a {
+  &,
+  &:visited {
+    color: var(--text-color);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
+
+[href='#linux'] {
+  &::before {
+    color: var(--terminal-color);
+    content: '~$';
+    font-family: monospace;
+    font-size: 16px;
+    margin-right: 0.5rem;
+  }
+
+  &::after {
+    background: var(--terminal-color);
+    content: '\a0';
+    font-family: monospace;
+    font-size: 16px;
+    opacity: 0;
+  }
+
+  &:hover,
+  &:focus {
+    &::after {
+      animation: blink 1s step-start infinite;
+    }
+  }
+}
+
+img[alt='Tux'] {
+  float: right;
+  margin-left: 1rem;
+}
+
+.date {
+  color: var(--faded-color);
+  float: right;
+  font-size: 0.8em;
+}
+
+section {
+  break-inside: avoid;
+}
+
+.grid {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+@page {
+  margin: 2rem;
+  size: auto;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+    padding: 0;
+  }
+
+  a[href^='//']
+  {
+    & > span {
+      display: none;
+    }
+
+    &::after {
+      content: 'https:' attr(href);
+    }
+  }
+}
