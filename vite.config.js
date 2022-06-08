@@ -9,7 +9,6 @@ export default defineConfig({
     createHtmlPlugin({
       minify: {
         collapseBooleanAttributes: true,
-        collapseInlineTagWhitespace: true,
         collapseWhitespace: true,
         decodeEntities: true,
         removeAttributeQuotes: true,
