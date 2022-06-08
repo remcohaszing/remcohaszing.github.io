@@ -108,7 +108,7 @@ h3 a {
   }
 }
 
-[href='#linux'] {
+.linux {
   &::before {
     color: var(--terminal-color);
     content: '~$';
