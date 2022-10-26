@@ -7,25 +7,7 @@ on:
     tags: ['*']
 
 jobs:
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with: { node-version: 18 }
-      - run: npm ci
-      - run: npx eslint .
-
-  prettier:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with: { node-version: 18 }
-      - run: npm ci
-      - run: npx prettier --check .
-
-  publish:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -44,6 +26,25 @@ jobs:
         with:
           path: dist
       - uses: actions/deploy-pages@v1
+        id: deployment
+
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: { node-version: 18 }
+      - run: npm ci
+      - run: npx eslint .
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: { node-version: 18 }
+      - run: npm ci
+      - run: npx prettier --check .
 
   stylelint:
     runs-on: ubuntu-latest
