@@ -133,7 +133,7 @@ h3 a {
   }
 }
 
-img[alt='Tux'] {
+.float {
   float: right;
   margin-left: 1rem;
 }
