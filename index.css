@@ -166,14 +166,14 @@ section {
     padding: 0;
   }
 
-  a[href^='//']
+  a[href^='https://']
   {
     & > span {
       display: none;
     }
 
     &::after {
-      content: 'https:' attr(href);
+      content: attr(href);
     }
   }
 }
