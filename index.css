@@ -1,19 +1,19 @@
 :root {
-  --background-color: #121212;
+  --background-color: #ededed;
   --faded-color: #878787;
-  --hover-color: #545454;
-  --link-color: #69c1fc;
-  --terminal-color: #72ff47;
-  --text-color: #dedede;
+  --hover-color: #bfbfbf;
+  --link-color: #0081d6;
+  --terminal-color: #2dc200;
+  --text-color: #000;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --background-color: #ededed;
-    --hover-color: #bfbfbf;
-    --link-color: #0081d6;
-    --terminal-color: #2dc200;
-    --text-color: #000;
+    --background-color: #121212;
+    --hover-color: #545454;
+    --link-color: #69c1fc;
+    --terminal-color: #72ff47;
+    --text-color: #dedede;
   }
 }
 
