@@ -1,0 +1,167 @@
+---
+description: A freelance software developer
+---
+
+import { Icon } from '../components/icon.js';
+import { JobSection } from '../components/job-section.js';
+import { ProfileLink } from '../components/profile-link.js';
+import { assetLink } from '../lib/asset.js'
+import { gravatar } from '../lib/gravatar.js';
+
+<nav>
+  <img alt="Remco Haszing" height={144} srcSet={`${gravatar(144)},${gravatar(288)} 2x,${gravatar(576)} 4x`} width={144} />
+
+  <header>
+    # Remco Haszing
+
+    Freelance software developer
+  </header>
+
+  -   <ProfileLink icon="github" name="GitHub" url="https://github.com/remcohaszing" />
+  -   <ProfileLink icon="gitlab" name="GitLab" url="https://gitlab.com/remcohaszing" />
+  -   <ProfileLink icon="twitter" name="Twitter" url="https://twitter.com/remcohaszing" />
+  -   <ProfileLink icon="mastodon" name="Mastodon" url="https://mastodon.social/remcohaszing" />
+  -   <ProfileLink icon="github-sponsors" name="Sponsor" title="Remco’s GitHub Sponsors profile" url="https://github.com/sponsors/remcohaszing" />
+  -   <ProfileLink icon="stackoverflow" name="StackOverflow" url="https://stackoverflow.com/u/1154610" />
+  -   <ProfileLink icon="npm" name="npm" url="https://npmjs.com/~remcohaszing" />
+  -   <ProfileLink icon="gmail" name="remcohaszing@gmail.com" title="Remco’s email address" url="mailto:remcohaszing@gmail.com" />
+</nav>
+
+***
+
+<main>
+  I’m a freelance software developer from the Netherlands who loves working on open source software.
+  I am currently available for hire, but I’m not actively looking. I like to focus on proper
+  solutions and high code quality, not hacky workarounds. Lately I have been interested in
+  development tooling. If you’re interested to see what I’m currently working on, please visit my
+  GitHub profile.
+
+  <section>
+    ## <Icon icon="javascript" /> JavaScript
+
+    I mainly focus on JavaScript, and yes, this includes Node.js, TypeScript, JSX, and React. Below
+    are some of the highlights, but it’s not everything I’ve worked on. To see more of my projects
+    and contributions, please visit my GitHub and GitLab profiles.
+
+    <div className="grid">
+      <section>
+        ### <span className="unified">uni</span>fied
+
+        I’m part of the unified collective. The unified collective is an ecosystem of tools and
+        plugins for working with ASTs. This can be used for transforming and validating code. For
+        example, it can be used to transform markdown to HTML, or for spell checking.
+
+        - [unified](https://unifiedjs.com)
+        - [remark](https://remark.js.org)
+        - [rehype](https://github.com/rehypejs/rehype)
+        - [MDX](https://mdxjs.com)
+      </section>
+
+      <section>
+        ### Language server
+
+        The language server protocol allows editors to provide smart language features. Monaco
+        editor is a code editor for the browser. It is the same editor that’s used in Visual Studio
+        Code. I worked on some projects which involve these concepts.
+
+        - [monaco-yaml](https://monaco-yaml.js.org)
+        - [monaco-tailwindcss](https://monaco-tailwindcss.js.org)
+        - [monaco-unified](https://monaco-unified.js.org)
+        - [MDX analyzer](https://github.com/mdx-js/mdx-analyzer)
+        - [unified-language-server](https://github.com/unifiedjs/unified-language-server)
+        - [VSCode remark extension](https://github.com/remarkjs/vscode-remark)
+      </section>
+    </div>
+  </section>
+
+  <section>
+    ## <Icon icon="python" /> Python
+
+    When I first started working on open source software, I was mainly using Python. Although I
+    mainly use JavaScript nowadays, I still do like Python. Unfortunately most of my Python code is
+    closed source. My first ever project was a GTK2 based minesweeper game. My first open source
+    project was wakeonlan for Python.
+
+    - [wakeonlan](https://github.com/remcohaszing/pywakeonlan)
+    - [minesweeper](https://gitlab.com/remcohaszing/minesweeper)
+  </section>
+
+  <section>
+    <img alt="" className="float" height={200} src={assetLink('tux.svg')} width={150} />
+
+    <h2 className="linux">Linux</h2>
+
+    I am a Linux user and enthusiast. I first started using Ubuntu Linux in 2008 and I’ve loved
+    using it ever since. I love that it’s free, open source, customizable and dark mode was
+    supported far before it became mainstream. Using Linux is also what sparked my interest in
+    programming.
+
+    As I started becoming more invested in software and open source, I also started appreciating the
+    terminal. Right now I can’t imagine working without a terminal and proper tab completion.
+
+    Later my Linux experience also helped me truly undestand Docker and Kubernetes.
+  </section>
+
+  <section>
+    ## Jobs & Education
+
+    <div className="grid">
+      <JobSection from={2022} icon="motif" name="Motif" to={2023}>
+        I worked as a freelance developer for [Motif](https://motif.land). Motif is a web based
+        editor which allows people to create beautiful websites while they can still focus on
+        content. It leverages the latest web technologies such as MDX, React, ESM, and Tailwind CSS.
+
+        What I liked about working at Motif is they want to invest in these open source
+        technologies.
+      </JobSection>
+
+      <JobSection from={2017} icon="appsemble" name="Appsemble" to={2022}>
+        [Appsemble](https://appsemble.app) is a low-code app building platform. it allows users to
+        define what an app looks like using a YAML file. An app contains blocks, which can also be
+        custom built. This combination allows users to build apps with minimal technical skill, and
+        allows them to extend the platform if they are willing to.
+
+        At Appsemble I’m involved with the full stack. This ranges from typical front end React code
+        and UX to the Node.js back end, database management, Kubernetes, and CI/CD. I still help
+        them out every now and then on a freelance basis.
+
+        The source code of Appsemble is open source and available on
+        [GitLab](https://gitlab.com/appsemble).
+      </JobSection>
+
+      <JobSection from={2013} icon="d-centralize" name="d-centralize" to={2017}>
+        My first job was at [d-centraize](https://d-centralize.nl). I started my internship here and
+        stayed around afterwards. At d-centralize I worked on various projects, including
+        [Pro6PP](https://pro6pp.nl), [ITSLanguage](https://itslanguage.nl), and
+        [InContract](https://incontract.nl). At d-centralize I worked as a full stack developer
+        using Python, Google Cloud, Flask, AngularJS, Cordova, and later Node.js and React.
+
+        Appsemble is also part of d-centralize. Eventually my focus within d-centralize shifted
+        solely to Appsemble.
+      </JobSection>
+
+      <JobSection from={2011} icon="fontys" name="Fontys" to={2015}>
+        At Fontys I followed the IT course with a focus on software engineering and a bit of ethical
+        hacking. The study focuses a lot on object oriented programming in Java and C#.
+
+        Although I left the technology stack used at Fontys behind, it’s also the place where I
+        learnt various other skills, such as working together in groups, using version control
+        systems, and many of the programming basics.
+      </JobSection>
+    </div>
+  </section>
+
+  <section>
+    ## Hobbies & Interests
+
+    I do love writing software, but that’s not all I do. For starters I love listening music! I
+    listen to music almost all the time, mostly metal 🤘. It’s not all screaming over guitars. You
+    should really check out [Machinae Supremacy](https://machinaesupremacy.com) and
+    [Diablo Swing Orchestra](https://diabloswing.com).
+
+    Also I like playing games. This includes board games, but also table top role playing games such
+    as [Pathfinder](https://paizo.com/pathfinder) and [Starfinder](https://paizo.com/starfinder). I
+    also enjoy playing video games, but I don’t consider myself to be a hardcore gamer. I mostly
+    play [Minecraft](https://minecraft.net) and [Nintendo](https://nintendo.com) games.
+  </section>
+</main>

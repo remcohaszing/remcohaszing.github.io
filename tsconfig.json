@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "nodenext",
+    "noEmit": true,
+    "strict": true,
+    "target": "es2022"
+  },
+  "mdx": {
+    "checkMdx": true
+  }
+}

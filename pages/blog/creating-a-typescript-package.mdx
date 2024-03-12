@@ -1,0 +1,346 @@
+---
+description: A guide for creating a minimal TypeScript package.
+---
+
+# Creating a TypeScript Package
+
+There are a lot of different TypeScript setups out there. Some of these are correct, some of them
+have invalid configurations that may or may not work by accident, others are outdated, This guide
+will walk you through steps to setup a basic minimal TypeScript package with some tests.
+
+## Table of Contents
+
+- [Gitting started](#gitting-started)
+  - [`.gitignore`](#gitignore)
+  - [`package.json`](#packagejson)
+  - [`tsconfig.json`](#tsconfigjson)
+- [The code](#the-code)
+- [Automate publishing](#automate-publishing)
+  - [Create a repository](#create-a-repository)
+  - [GitHub actions](#github-actions)
+  - [Publishing](#publishing)
+- [Further configuration](#further-configuration)
+
+## Gitting started
+
+To get started, create a new folder and initialize a git repository.
+
+```sh
+mkdir my-package
+cd my-package
+git init
+```
+
+### `.gitignore`
+
+A TypeScript project contains some generated files. We don’t want to commit those to git, so we need
+a `.gitignore` file.
+
+```text
+# This directory contains our dependencies
+node_modules/
+
+# This is where we will write our compiled output
+dist/
+
+# The result of `npm pack`
+*.tgz
+```
+
+### `package.json`
+
+Next, create a file named `package.json`. `package.json` is the entrypoint of your npm package.
+
+```json
+{
+  "name": "my-package",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "exports": "./dist/my-package.js",
+  "main": "./dist/my-package.js",
+  "repository": "my-github-username/my-package",
+  "files": [
+    "dist",
+    "src",
+    "!*.test.*"
+  ],
+  "scripts": {
+    "prepack": "tsc --build",
+    "pretest": "tsc --build",
+    "test": "node --enable-source-maps --test"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
+```
+
+`name` is the name of the package through which it will be available on npm. In this case, your
+users will be able to install the package by running `npm install my-package`. It is also the name
+using which users will import your package.
+
+`version` is the [semantic version](https://semver.org) of your package. We will keep it `0.0.0` to
+get started.
+
+`description` is a short single line description of your package.
+
+`type` indicates the type of files with a `.js` or `.ts` extension. The default is `commonjs`, but
+it’s best to always set it explicitly. For new packages I recommend using `module`.
+
+`exports` determines which file will be resolved when your package is imported. In this example, the
+following import:
+
+```js
+import 'my-package'
+```
+
+resolves to the `dist/my-package.js` file in your package. Package exports support more complex
+configurations to support different entrypoints and export conditions, but that’s out of scope for
+this guide. For more information on that, see the Node.js documentation on
+[Package entry points](https://nodejs.org/api/packages.html#package-entry-points).
+
+`main` is mostly no longer used if `exports` is defined. Some bundlers still use it. It’s also used
+by TypeScript’s legacy module resolution algorithms.
+
+`files` determines which files should be included in the package. Typically you write TypeScript
+code in a `src` directory, and emit it to the `dist` directory. Different projects may use different
+folder names, but for this example we’ll stick with those. In our example the tests will follow the
+`*.test.ts` naming pattern. We don’t want to publish tests, so those are excluded.
+
+`scripts` may contain various reusable scripts. Some special names are used for
+[life cycle scripts](https://docs.npmjs.com/cli/v10/using-npm/scripts#life-cycle-scripts). A
+TypeScript project typicall contains the following life cycle scripts:
+
+- `test` — This script is run when you run `npm test`, which is the most common way to run tests.
+  Our example uses the [Node.js test runner](https://nodejs.org/api/test.html), which is why the
+  test script runs `node --enable-source-maps --test`.
+- `pretest` — Node.js can’t run TypeScript code. The TypeScript project needs to be compiled first.
+  The `pretest` script runs before the `test` script, which is why we build the project here with
+  `tsc --build`.
+- `prepack` — The prepack script runs before creating a package from the repository. For example
+  this runs before you run `npm pack` or `npm publish`. Since we want to compile the TypeScript
+  before packing, this script runs `tsc --build`.
+
+`devDependencies` contains the dependencies needed to develop the project. For our project we need
+`typescript` for compiling the project, and `@types/node` to get type definitions for the Node.js
+test runner.
+
+After creating `package.json`, run `npm install` to install dependencies and create a
+`package-lock.json` file.
+
+### `tsconfig.json`
+
+Our next file is `tsconfig.json`. `tsconfig.json` configures your TypeScript program.
+
+```json
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "lib": "es2022",
+    "module": "nodenext",
+    "outDir": "dist",
+    "rootDir": "src",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2022"
+  }
+}
+```
+
+`strict` enables several recommended strict type checking options. This is generally recommended for
+new projects.
+
+`target` configures the ECMAScript version we want to support. Our package will target Node.js 18,
+for which `es2022` is sufficient. `lib` needs to match the target. If your package is for use in the
+browser, you can omit `lib`. By default it will match your target, and also include the matching DOM
+types.
+
+`rootDir` specifies where we will author the source code. `outDir` specifies where the compiled
+output should be written.
+
+`declaration` specifies we want to emit TypeScript declaration files. Without declaration files, the
+package can’t be consumed by TypeScript users who want to use this package. `declarationMap` emits
+a declaration map for each declaration file. If this is included, _Go to definition_ from within an
+editor will take the user to the source code from which the declaration file was generated instead
+of the declaration file itself. `sourceMap` allows certain tools such as debuggers or stack traces
+to map the compiled output back to the source code.
+
+`module` configures the module system to use. For libraries you should use `nodenext` or `node16`.
+Those are equivalent at the moment of writing. For applications that are bundled you should use
+`preserve`. Other `module` options are outdated and should not be used. The `module` option also
+configures `moduleResolution` and `esModuleInterop` for you, so you shouldn’t specify those.
+
+## The code
+
+Since the focus of this guide is on creating a project, the code example will be very minimal.
+
+The entry point refers to `my-package.js` in the out dir. We need to match this file in out root
+dir. So our source code will be in `src/my-package.ts`. Let’s write the following content:
+
+```typescript
+export function greet(name = 'you'): string {
+  return `Hello ${name}!`
+}
+```
+
+We also need a test file. Let’s name it `src/my-package.test.ts`.
+
+```typescript
+import assert from 'node:assert/strict'
+import { test } from 'node:test'
+import { greet } from 'my-package'
+
+test('greet with name', () => {
+  const greeting = greet('Remco')
+
+  assert.equal(greeting, 'Hello Remco!')
+})
+
+test('greet without', () => {
+  const greeting = greet()
+
+  assert.equal(greeting, 'Hello you!')
+})
+```
+
+Note that in our TextDecoderStream, we import `greet` from `my-package`. We could have imported
+`greet` from `./my-package.js`. However, by importing from it `my-package` we do not only test the
+`greet` function, we also make sure that it is properly exported in the public interface.
+
+Now to run the tests, run `npm test`.
+
+## Automate publishing
+
+Now that we have a useful package, let’s publish it. This section will focus on using
+[GitHub](https://github.com), but the same concepts apply to other hosting platforms.
+
+### Create a repository
+
+First, [create a new repository on GitHub](https://github.com/new). Next we commit what we have.
+Then we add the new GitHub repository as the `origin` remote, and we push to GitHub.
+
+```sh
+git add .
+git commit -m 'Initial commit'
+git remote add origin 'git@github.com:my-github-username/my-package.git'
+git push -u origin main
+```
+
+If everything went well, your project is now on GitHub.
+
+### GitHub actions
+
+Next we create a GitHub [workflow](https://docs.github.com/en/actions/using-workflows) to automate
+testing and publishing. Create the file `.github/workflows/ci.yaml` with the following content:
+
+```yaml
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['*']
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: '*.tgz'
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 18
+          - 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - pack
+      - test
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+      - uses: actions/download-artifact@v4
+        with: { name: package }
+      - run: npm publish *.tgz --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+This workflow does the following:
+
+- It runs for every push to the `main` branch, every tag, and every pull request.
+- The `pack` job creates a package for every run which can be downloaded and introspected as a build
+  artifact.
+- The `test` job runs the test for Node.js versions 18 and 20.
+- The `release` job runs only if a tag is pushed. It downloads the package built by the `pack` job,
+  and publishes it to npm.
+
+The release job needs an npm access token. To get an npm access token, go to
+[npmjs.com](https://www.npmjs.com) and log in. Click on your profile avatar → _Access Tokens_ →
+_Generate New Token_ and follow the instructions. Copy the access token.
+
+From your project on GitHub, go to _Settings_ → _Secrets and variables_ → _Actions_. Click _New
+repository secret_ As the name, enter `NPM_TOKEN`. This needs to match the secret used in the
+workflow file. Paste the npm token in the _Secret_ field, and click _Add secret_.
+
+Add, commit, and push this file.
+
+```sh
+git add .github/workflows/ci.yaml
+git commit -m 'Add CI workflow'
+git push
+```
+
+### Publishing
+
+Now all you need to do to publish this, is push a new tag to GitHub. The
+[`npm version`](https://docs.npmjs.com/cli/v10/commands/npm-version) command increases the version
+and creates a git tag. So all you need to run to publish version 0.0.1 is:
+
+```sh
+npm version patch
+git push --tags
+```
+
+You will receive an email from npm when your package is published succesfully.
+
+## Further configuration
+
+This post only shows the a minimal TypeScript project. It’s strongly recommended to add some more
+metadata to your project, including:
+
+- A [readme](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
+- A [license](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
+- Code quality tools such as [ESLint](https://eslint.org), [Prettier](https://prettier.io), and
+  [remark-lint](https://github.com/remarkjs/remark-lint).
+- An [`.editorconfig`](http://editorconfig.org) file
+- Code coverage checks.
+
+However, that’s out of scope for this post.

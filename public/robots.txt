@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://remcohaszing.nl/sitemap.xml

@@ -1,0 +1,23 @@
+import { type ComponentPropsWithoutRef, type ReactNode } from 'react'
+
+interface CodeBlockProps extends ComponentPropsWithoutRef<'pre'> {
+  /**
+   * An optional filename for the code block.
+   */
+  filename?: string
+}
+
+/**
+ * Render a code block with a copy button.
+ */
+export function CodeBlock({ filename, ...props }: CodeBlockProps): ReactNode {
+  return (
+    <div className="code-block">
+      <button className="copy" type="button">
+        Copy
+      </button>
+      {filename ? <label>{filename}</label> : null}
+      <pre {...props} />
+    </div>
+  )
+}

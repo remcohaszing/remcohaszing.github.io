@@ -16,6 +16,12 @@
     --terminal-color: #72ff47;
     --text-color: #dedede;
   }
+
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
 }
 
 * {
@@ -168,7 +174,7 @@ section {
     padding: 0;
   }
 
-  a[href^='https://']
+  a[href^='https://']:has(> span)
   {
     & > span {
       display: none;
@@ -178,4 +184,18 @@ section {
       content: attr(href);
     }
   }
+}
+
+.code-block {
+  position: relative;
+}
+
+.code-block > pre {
+  padding: 1rem;
+}
+
+.copy {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
 }
