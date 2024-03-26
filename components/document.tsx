@@ -51,7 +51,7 @@ export function Document({ children, meta, title, type, url }: DocumentProps): R
           httpEquiv="Content-Security-Policy"
         />
         <meta content="#121212" name="theme-color" />
-        <meta content="width=device-width" name="viewport" />
+        <meta content="width=device-width,initial-scale=1" name="viewport" />
         {meta.description ? <meta content={meta.description} name="description" /> : null}
         {meta.description ? <meta content={meta.description} name="og:description" /> : null}
         <meta content={url} name="og:url" />
