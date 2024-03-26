@@ -19,8 +19,8 @@
 
   .shiki,
   .shiki span {
-    color: var(--shiki-dark) !important;
     background-color: var(--shiki-dark-bg) !important;
+    color: var(--shiki-dark) !important;
   }
 }
 
@@ -191,6 +191,7 @@ section {
 }
 
 .code-block > pre {
+  overflow-x: auto;
   padding: 1rem;
 }
 
