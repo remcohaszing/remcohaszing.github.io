@@ -2,6 +2,7 @@ import { createLoader } from '@mdx-js/node-loader'
 import rehypeShiki from '@shikijs/rehype'
 import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 import rehypeMdxTitle from 'rehype-mdx-title'
+import rehypeSlug from 'rehype-slug'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
@@ -18,6 +19,7 @@ export const { load } = createLoader({
     ]
   ],
   rehypePlugins: [
+    rehypeSlug,
     [
       rehypeShiki,
       {
