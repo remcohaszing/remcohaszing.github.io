@@ -206,9 +206,9 @@ test('greet without', () => {
 })
 ```
 
-Note that in our TextDecoderStream, we import `greet` from `my-package`. We could have imported
-`greet` from `./my-package.js`. However, by importing from it `my-package` we do not only test the
-`greet` function, we also make sure that it is properly exported in the public interface.
+Note that in our test, we import `greet` from `my-package`. We could have imported `greet` from
+`./my-package.js`. However, by importing from it `my-package` we do not only test the `greet`
+function, we also make sure that it is properly exported in the public interface.
 
 Now to run the tests, run `npm test`.
 
@@ -307,7 +307,7 @@ The release job needs an npm access token. To get an npm access token, go to
 _Generate New Token_ and follow the instructions. Copy the access token.
 
 From your project on GitHub, go to _Settings_ → _Secrets and variables_ → _Actions_. Click _New
-repository secret_ As the name, enter `NPM_TOKEN`. This needs to match the secret used in the
+repository secret_. As the name, enter `NPM_TOKEN`. This needs to match the secret used in the
 workflow file. Paste the npm token in the _Secret_ field, and click _Add secret_.
 
 Add, commit, and push this file.
