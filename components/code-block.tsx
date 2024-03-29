@@ -13,9 +13,6 @@ interface CodeBlockProps extends ComponentPropsWithoutRef<'pre'> {
 export function CodeBlock({ filename, ...props }: CodeBlockProps): ReactNode {
   return (
     <div className="code-block">
-      <button className="copy" type="button">
-        Copy
-      </button>
       {filename ? <label>{filename}</label> : null}
       <pre {...props} />
     </div>
