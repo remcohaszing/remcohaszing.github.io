@@ -1,10 +1,22 @@
-import { cp, mkdir, rm, writeFile } from 'node:fs/promises'
-import { register } from 'node:module'
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, parse, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
+import { compile, type Jsx, run } from '@mdx-js/mdx'
+import rehypeShiki from '@shikijs/rehype'
 import klaw from 'klaw'
+import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 import { renderToString } from 'react-dom/server'
+import rehypeAutolinkHeadings, {
+  type Options as RehypeAutolinkHeadingsOptions
+} from 'rehype-autolink-headings'
+import rehypeMdxCodeProps from 'rehype-mdx-code-props'
+import rehypeMdxTitle from 'rehype-mdx-title'
+import rehypeSlug from 'rehype-slug'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGfm from 'remark-gfm'
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
+import { type PluggableList } from 'unified'
 import { rss, type Entry as RssEntry } from 'xast-util-feed'
 import { sitemap, type Entry as SitemapEntry } from 'xast-util-sitemap'
 import { toXml } from 'xast-util-to-xml'
@@ -12,6 +24,7 @@ import { toXml } from 'xast-util-to-xml'
 import { CodeBlock } from './components/code-block.js'
 import { Document } from './components/document.js'
 import { assetMap } from './lib/asset.js'
+import { type Page } from './lib/types.js'
 
 type Entry = RssEntry &
   SitemapEntry & {
@@ -23,14 +36,66 @@ type Entry = RssEntry &
     isArticle: boolean
   }
 
-register('./mdx-loader.ts', import.meta.url)
-
 const siteUrl = new URL('https://remcohaszing.nl')
 const distDir = fileURLToPath(new URL('dist', import.meta.url))
 const pagesDir = fileURLToPath(new URL('pages', import.meta.url))
 const publicDir = fileURLToPath(new URL('public', import.meta.url))
 const entries: Entry[] = []
 const mdxComponents = { pre: CodeBlock }
+
+/**
+ * Import a page to render.
+ *
+ * @param url
+ *   The file URL to import.
+ * @param isArticle
+ *   Whether or not the page is an article.
+ * @returns
+ *   The page module.
+ */
+async function importPage(url: URL, isArticle: boolean): Promise<Page> {
+  if (!/\.mdx?$/.test(url.pathname)) {
+    return import(String(url))
+  }
+
+  const value = await readFile(url, 'utf8')
+
+  const rehypePlugins: PluggableList = [
+    rehypeSlug,
+    [rehypeShiki, { themes: { light: 'github-light', dark: 'github-dark' } }],
+    rehypeMdxCodeProps,
+    rehypeMdxTitle
+  ]
+
+  if (isArticle) {
+    rehypePlugins.push([
+      rehypeAutolinkHeadings,
+      {
+        content: {
+          type: 'element',
+          tagName: 'span',
+          properties: { ariaHidden: true },
+          children: [{ type: 'text', value: '§ ' }]
+        }
+      } satisfies RehypeAutolinkHeadingsOptions
+    ])
+  }
+
+  const code = await compile(
+    { url, value },
+    {
+      outputFormat: 'function-body',
+      remarkPlugins: [remarkFrontmatter, remarkGfm, [remarkMdxFrontmatter, { name: 'meta' }]],
+      rehypePlugins
+    }
+  )
+  return run(code, {
+    baseUrl: url,
+    Fragment,
+    jsx: jsx as Jsx,
+    jsxs: jsxs as Jsx
+  }) as unknown as Promise<Page>
+}
 
 /**
  * Emit a file to the `dist` directory.
@@ -67,10 +132,10 @@ for await (const { path, stats } of klaw(pagesDir, {})) {
   console.log('Read:', relative(process.cwd(), path))
   const url = String(new URL(`${dir}/${name.replace(/^index$/, '')}`, siteUrl))
   const importUrl = pathToFileURL(path)
-
-  const { default: Content, ...module } = await import(String(importUrl))
   const isArticle = dir === 'blog'
-  const content = <Content components={mdxComponents} />
+
+  const module = await importPage(importUrl, isArticle)
+  const content = <module.default components={mdxComponents} />
   const document = (
     <Document {...module} isArticle={isArticle} url={url}>
       {content}

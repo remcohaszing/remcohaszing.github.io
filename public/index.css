@@ -106,10 +106,14 @@ hr {
   border-color: var(--faded-color);
 }
 
-h2 a,
-h3 a {
-  &,
-  &:visited {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  a,
+  a:visited {
     color: var(--text-color);
   }
 }

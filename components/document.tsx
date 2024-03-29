@@ -3,20 +3,9 @@ import { type ReactNode } from 'react'
 import { assetLink } from '../lib/asset.js'
 import { gravatar } from '../lib/gravatar.js'
 import { formatDate } from '../lib/intl.js'
+import { type Page } from '../lib/types.js'
 
-interface Meta {
-  /**
-   * The date on which an article was created.
-   */
-  created: string
-
-  /**
-   * The description of a page.
-   */
-  description?: string
-}
-
-interface DocumentProps {
+interface DocumentProps extends Page {
   /**
    * The content on the page.
    */
@@ -26,16 +15,6 @@ interface DocumentProps {
    * Whether this is an article or a different kind of page.
    */
   isArticle: boolean
-
-  /**
-   * Additional page metadata. This is typically defined in frontmatter.
-   */
-  meta: Meta
-
-  /**
-   * The title of the page.
-   */
-  title: string
 
   /**
    * The canonical URL.
