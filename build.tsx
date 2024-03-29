@@ -72,7 +72,7 @@ for await (const { path, stats } of klaw(pagesDir, {})) {
   const isArticle = dir === 'blog'
   const content = <Content components={mdxComponents} />
   const document = (
-    <Document {...module} type={isArticle ? 'article' : 'website'} url={url}>
+    <Document {...module} isArticle={isArticle} url={url}>
       {content}
     </Document>
   )

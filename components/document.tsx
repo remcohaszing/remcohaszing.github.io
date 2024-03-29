@@ -2,8 +2,14 @@ import { type ReactNode } from 'react'
 
 import { assetLink } from '../lib/asset.js'
 import { gravatar } from '../lib/gravatar.js'
+import { formatDate } from '../lib/intl.js'
 
 interface Meta {
+  /**
+   * The date on which an article was created.
+   */
+  created: string
+
   /**
    * The description of a page.
    */
@@ -17,6 +23,16 @@ interface DocumentProps {
   children: ReactNode
 
   /**
+   * Whether this is an article or a different kind of page.
+   */
+  isArticle: boolean
+
+  /**
+   * Additional page metadata. This is typically defined in frontmatter.
+   */
+  meta: Meta
+
+  /**
    * The title of the page.
    */
   title: string
@@ -25,22 +41,12 @@ interface DocumentProps {
    * The canonical URL.
    */
   url: string
-
-  /**
-   * Additional page metadata. This is typically defined in frontmatter.
-   */
-  meta: Meta
-
-  /**
-   * Whether the page is an article or a resular website page.
-   */
-  type: 'article' | 'website'
 }
 
 /**
  * Render a document page.
  */
-export function Document({ children, meta, title, type, url }: DocumentProps): ReactNode {
+export function Document({ children, isArticle, meta, title, url }: DocumentProps): ReactNode {
   return (
     <html lang="en">
       <head>
@@ -61,7 +67,7 @@ export function Document({ children, meta, title, type, url }: DocumentProps): R
         <meta content="256" name="og:image:height" />
         <meta content="image/jpeg" name="og:image:type" />
         <meta content="256" name="og:image:width" />
-        <meta content={type} name="og:type" />
+        <meta content={isArticle ? 'article' : 'website'} name="og:type" />
         <meta content="summary" name="twitter:card" />
         <meta content="@remcohaszing" name="twitter:creator" />
         <meta content="@remcohaszing" name="twitter:site" />
@@ -72,7 +78,21 @@ export function Document({ children, meta, title, type, url }: DocumentProps): R
         <link href={url} rel="canonical" />
       </head>
       <body>
-        {children}
+        {isArticle ? (
+          <>
+            <nav>
+              <a href="/">About</a>
+            </nav>
+            <main>
+              <time className="date" dateTime={meta.created}>
+                {formatDate(meta.created)}
+              </time>
+              {children}
+            </main>
+          </>
+        ) : (
+          children
+        )}
         <script src={assetLink('script.js')} type="module" />
       </body>
     </html>
