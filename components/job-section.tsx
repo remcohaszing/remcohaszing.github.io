@@ -21,7 +21,7 @@ interface JobSectionProps {
   /**
    * The end year.
    */
-  to?: number
+  to?: number | 'Present'
 
   /**
    * Content to render.

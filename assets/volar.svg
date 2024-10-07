@@ -1,0 +1,17 @@
+<svg viewBox="0 0 425.87 372" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="a" x1="494" x2="41" y1="87" y2="309" gradientTransform="translate(-43.064 -64)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7A85EC" offset="0"/>
+      <stop stop-color="#3DDCFF" offset="1"/>
+    </linearGradient>
+    <linearGradient id="b" x1="250" x2="250" y1="139.56" y2="475" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7696AD" offset="0"/>
+      <stop stop-color="#008FF6" stop-opacity="0" offset="1"/>
+    </linearGradient>
+    <mask id="c" x="73" y="139" width="354" height="336" style="mask-type:alpha" maskUnits="userSpaceOnUse">
+      <path d="m274 161c-84.5-59-200.5 22.5-200.5 22.5l179 291.5 174-291.5s-68 36.5-152.5-22.5z" fill="url(#b)"/>
+    </mask>
+  </defs>
+  <path d="m223.33 366c-4.619 8-16.166 8-20.784 0l-200.92-348c-4.6188-8 1.1547-18 10.392-18h401.84c9.238 0 15.011 10 10.392 18z" fill="url(#a)"/>
+  <path transform="translate(-43.064 -64)" d="m266.39 430c-4.619 8-16.166 8-20.784 0l-200.92-348c-4.6188-8 1.1547-18 10.392-18h401.84c9.238 0 15.011 10 10.392 18z" fill="#001aff" mask="url(#c)" style="mix-blend-mode:overlay"/>
+</svg>

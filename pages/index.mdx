@@ -31,7 +31,7 @@ import { gravatar } from '../lib/gravatar.js'
 
 <main>
   I’m a freelance software developer from the Netherlands who loves working on open source software.
-  I am currently available for hire, but I’m not actively looking. I like to focus on proper
+  I am currently open to new opportunities, but I’m not actively looking. I like to focus on proper
   solutions and high code quality, not hacky workarounds. Lately I have been interested in
   development tooling. If you’re interested to see what I’m currently working on, please visit my
   GitHub profile.
@@ -39,9 +39,9 @@ import { gravatar } from '../lib/gravatar.js'
   <section>
     ## <Icon icon="javascript" /> JavaScript
 
-    I mainly focus on JavaScript, and yes, this includes Node.js, TypeScript, JSX, and React. Below
-    are some of the highlights, but it’s not everything I’ve worked on. To see more of my projects
-    and contributions, please visit my GitHub and GitLab profiles.
+    I mainly focus on JavaScript. This includes Node.js, TypeScript, JSX, and React. Below are some
+    of the highlights, but it’s not everything I’ve worked on. To see more of my projects and
+    contributions, visit my GitHub and GitLab profiles.
 
     <div className="grid">
       <section>
@@ -55,6 +55,17 @@ import { gravatar } from '../lib/gravatar.js'
         - [remark](https://remark.js.org)
         - [rehype](https://github.com/rehypejs/rehype)
         - [MDX](https://mdxjs.com)
+      </section>
+
+      <section>
+        ### <Icon icon="volar" /> Volar
+
+        [Volar](https://volarjs.dev) is a framework for building embedded language tooling. It
+        powers the tooling for languages such as [Vue](https://vuejs.org) and
+        [Astro](https://astro.build). I started using Volar to build the MDX language tooling. As I
+        got more involved, I became part of the team. By sharing a common foundation between the
+        various languages adapting Volar, bugs get fixed for everyone, which leads to more stability
+        in language tooling in the JavaScript ecosystem overall.
       </section>
 
       <section>
@@ -106,10 +117,26 @@ import { gravatar } from '../lib/gravatar.js'
     ## Jobs & Education
 
     <div className="grid">
+      <JobSection from={2024} icon="transloadit" name="Transloadit" to="Present">
+        [Transloadit](https://transloadit.com) provides an API do handle various file transforms. I
+        help maintain their website. For example, I added smart editor support to their JSON editor.
+        I also help out with TypeScript integration and various miscellaneous issues.
+      </JobSection>
+
+      <JobSection from={2023} icon="cuescript" name="CueScript" to="Present">
+        [CueScript](https://www.cuescript.tv) is a company that builds teleprompters. Their new
+        teleprompting software uses [Monaco Editor](https://microsoft.github.io/monaco-editor) under
+        the hood. An important requirement for them is to different text sizes. However, Monaco
+        Editor did not support that. I added support for variable line heights to Monaco Editor, as
+        well as support for the line wrapping calculations that come with it. This all had to be
+        implemented with a big focus on performance.
+      </JobSection>
+
       <JobSection from={2022} icon="motif" name="Motif" to={2023}>
-        I worked as a freelance developer for [Motif](https://motif.land). Motif is a web based
-        editor which allows people to create beautiful websites while they can still focus on
-        content. It leverages the latest web technologies such as MDX, React, ESM, and Tailwind CSS.
+        I worked as a freelance developer for [Motif](https://motif.land) (now
+        [Markprompt](https://markprompt.com)). Motif was a web based editor which allows people to
+        create beautiful websites while they can still focus on content. It leverages the latest web
+        technologies such as MDX, React, and Tailwind CSS.
 
         What I liked about working at Motif is they want to invest in these open source
         technologies.
