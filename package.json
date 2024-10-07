@@ -32,6 +32,7 @@
     "stylelint-config-standard": "^36.0.0",
     "stylelint-order": "^6.0.0",
     "tsimp": "^2.0.0",
+    "typescript": "~5.5.0",
     "unified": "^11.0.0",
     "xast-util-feed": "^2.0.0",
     "xast-util-sitemap": "^2.0.0",
