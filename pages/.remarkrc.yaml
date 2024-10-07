@@ -1,0 +1,4 @@
+plugins:
+  - remark-mdx
+  - remark-preset-remcohaszing
+  - [unified-consistency, false]
