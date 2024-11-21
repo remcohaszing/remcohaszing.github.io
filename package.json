@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "build": "tsimp build.tsx"
+    "build": "tsx build.tsx"
   },
   "dependencies": {
     "@mdx-js/mdx": "^3.0.0",
@@ -25,13 +25,13 @@
     "remark-cli": "^12.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
-    "remark-preset-remcohaszing": "^3.0.0",
     "remark-mdx": "^3.0.0",
     "remark-mdx-frontmatter": "^4.0.0",
+    "remark-preset-remcohaszing": "^3.0.0",
     "stylelint": "^16.0.0",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-order": "^6.0.0",
-    "tsimp": "^2.0.0",
+    "tsx": "^4.19.2",
     "typescript": "~5.5.0",
     "unified": "^11.0.0",
     "xast-util-feed": "^2.0.0",
