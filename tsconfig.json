@@ -4,6 +4,7 @@
     "module": "nodenext",
     "moduleDetection": "force",
     "noEmit": true,
+    "skipLibCheck": true,
     "strict": true,
     "target": "es2022"
   },
