@@ -3,7 +3,6 @@ import { dirname, join, parse, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { compile, type Jsx, run } from '@mdx-js/mdx'
-import rehypeShiki from '@shikijs/rehype'
 import klaw from 'klaw'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 import { renderToString } from 'react-dom/server'
@@ -13,6 +12,7 @@ import rehypeAutolinkHeadings, {
 import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 import rehypeMdxTitle from 'rehype-mdx-title'
 import rehypeSlug from 'rehype-slug'
+import rehypeStarryNight from 'rehype-starry-night'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
@@ -62,7 +62,7 @@ async function importPage(url: URL, isArticle: boolean): Promise<Page> {
 
   const rehypePlugins: PluggableList = [
     rehypeSlug,
-    [rehypeShiki, { themes: { light: 'github-light', dark: 'github-dark' } }],
+    rehypeStarryNight,
     rehypeMdxCodeProps,
     rehypeMdxTitle
   ]
@@ -174,3 +174,4 @@ await emit(
   )
 )
 await cp(publicDir, distDir, { recursive: true })
+await cp('node_modules/@wooorm/starry-night/style/both.css', join(distDir, 'starry-night.css'))

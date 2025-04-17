@@ -12,19 +12,13 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #121212;
-    --code-background-color: #565656;
+    --code-background-color: #1e1e1e;
     --code-color: #ff9cde;
     --faded-color: #878787;
     --hover-color: #545454;
     --link-color: #69c1fc;
     --terminal-color: #72ff47;
     --text-color: #dedede;
-  }
-
-  .shiki,
-  .shiki span {
-    background-color: var(--shiki-dark-bg) !important;
-    color: var(--shiki-dark) !important;
   }
 }
 
@@ -195,6 +189,7 @@ section {
 }
 
 .code-block {
+  background: var(--code-background-color);
   position: relative;
 }
 

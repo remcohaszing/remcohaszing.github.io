@@ -52,6 +52,7 @@ export function Document({ children, isArticle, meta, title, url }: DocumentProp
         <meta content="@remcohaszing" name="twitter:site" />
         <title>{title}</title>
         <link href="/index.css" rel="stylesheet" />
+        <link href="/starry-night.css" rel="stylesheet" />
         <link href={assetLink('favicon.svg')} rel="icon" type="image/svg+xml" />
         <link href="/rss.xml" rel="alternate" title="Remco’s blog" type="application/rss+xml" />
         <link href={url} rel="canonical" />
