@@ -28,10 +28,10 @@ interface ProfileLinkProps {
  * A link to one of Remco’s profiles.
  */
 export function ProfileLink({
-  name,
   icon,
-  url,
-  title = `Remco’s ${name} profile`
+  name,
+  title = `Remco’s ${name} profile`,
+  url
 }: ProfileLinkProps): ReactNode {
   return (
     <a href={url} title={title}>
