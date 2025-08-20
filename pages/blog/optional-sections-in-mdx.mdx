@@ -1,0 +1,262 @@
+---
+created: 2025-10-18
+descriptions: A strategy to add optional sections in MDX
+---
+
+# Optional sections in MDX
+
+## Table of Contents
+
+- [Rendering props down in the component tree.](#rendering-props-down-in-the-component-tree)
+- [Introducing MDX](#introducing-mdx)
+- [The solution](#the-solution)
+  - [Using dedicated components](#using-dedicated-components)
+  - [Using keys](#using-keys)
+
+## Rendering props down in the component tree.
+
+When writing React components, it’s fairly trivial how to define props which you render somewhere
+down the component tree. For example:
+
+```tsx
+import type { ReactNode } from 'react'
+
+export namespace Profile {
+  export interface Props {
+    name: ReactNode
+    introduction?: ReactNode
+    hobbies?: ReactNode
+  }
+}
+
+export function Profile({ hobbies, introduction, name }: Profile.Props): ReactNode {
+  return (
+    <main>
+      <h1>{name}</h1>
+      {introduction ? <h2>Introduction</h2> : null}
+      {introduction ? <p>{introduction}</p> : null}
+      {hobbies ? <h2>Hobbies</h2< : null}
+      {hobbies ? <p>{hobbies}</p> : null}
+    </main>
+  )
+}
+```
+
+Great! Now we can use the component like this:
+
+```tsx
+import type { ReactNode } from 'react'
+
+import { Profile } from './profile.tsx'
+
+export function App(): ReactNode {
+  return (
+    <Profile
+      name="Remco"
+      introduction={
+        <>
+          I’m a <strong>software developer</strong> from the Netherlands.
+        </>
+      }
+      hobbies={
+        <>
+          I like listening to <strong>metal</strong> and casually playing <strong>Minecraft</strong>
+          .
+        </>
+      }
+    />
+  )
+}
+```
+
+So far so good.
+
+## Introducing MDX
+
+[MDX](https://mdxjs.com) allows you to write JSX syntax inside a markdown-like format. This is a
+very powerful way to author a lot of content with smaller fancier components. So how would we use
+the component above in MDX? The same actually.
+
+```mdx
+import { Profile } from './profile.tsx'
+
+We can use **markdown** here!
+
+<Profile
+  name="Remco"
+  introduction={
+    <>
+      I’m a <strong>software developer</strong> from the Netherlands.
+    </>
+  }
+  hobbies={
+    <>
+      I like listening to <strong>metal</strong> and casually playing <strong>Minecraft</strong>.
+    </>
+  }
+/>
+```
+
+However, we use some of the convenience of MDX. We can’t use markdown inside of JSX props. It feels
+cumbersome to author the _introduction_ and _hobbies_ sections of the document compared to the rest.
+
+## The solution
+
+MDX doesn’t allow markdown syntax in props, but it **does** allow using markdown syntax in children.
+This means we can pass markdown based children to `<Profile />` instead of the `introduction` and
+`hobbies` props.
+
+```mdx
+import { Profile } from './profile.tsx'
+
+We can use **markdown** here!
+
+<Profile
+  name="Remco"
+  hobbies={
+    <>
+      I like listening to <strong>metal</strong> and casually playing <strong>Minecraft</strong>.
+    </>
+  }
+>
+  I’m a **software developer** from the Netherlands.
+</Profile>
+```
+
+This is a conundrum though, which should we pick? We can only pick one… or can we?
+
+### Using dedicated components
+
+I came up with a little pattern to accept multiple children `<Profile />` First, we rewrite the
+`<Profile />` component. In this process, we replace 2 of its props with new components:
+`<Introduction />` and `<Hobbies />`.
+
+```tsx
+import type { JSXElementConstructor, ReactNode } from 'react'
+
+import { Children, isValidElement } from 'react'
+
+export namespace Introduction {
+  export interface Props {
+    children: ReactNode
+  }
+}
+
+export function Introduction({ children }: Introduction.Props): ReactNode {
+  return children
+}
+
+export namespace Hobbies {
+  export interface Props {
+    children: ReactNode
+  }
+}
+
+export function Hobbies({ children }: Hobbies.Props): ReactNode {
+  return children
+}
+
+export namespace Profile {
+  export interface Props {
+    name: ReactNode
+    children?: ReactNode
+  }
+}
+
+export function Profile({ children, name }: Profile.Props): ReactNode {
+  const sections = new Map<JSXElementConstructor, ReactNode>()
+
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && typeof child.type === 'function') {
+      sections.set(child.type, child)
+    }
+  })
+
+  return (
+    <main>
+      <h1>{name}</h1>
+      {sections.has(Introduction) && <h2>Introduction</h2>}
+      {sections.get(Introduction)}
+      {sections.has(Hobbies) && <h2>Hobbies</h2>}
+      {sections.get(Hobbies)}
+    </main>
+  )
+}
+```
+
+Now in MDX we can write:
+
+```mdx
+import { Hobbies, Introduction, Profile } from './profile.tsx'
+
+We can use **markdown** here!
+
+<Profile name="Remco">
+  <Introduction>
+    I’m a **software developer** from the Netherlands.
+  </Introduction>
+
+  <Hobbies>
+    I like listening to **metal** and casually playing **Minecraft**.
+  </Hobbies>
+</Profile>
+```
+
+Beware though that the components are not referentially equivalent if you use RSC and your
+components are client components. So in that case it won’t work. You should use a server component
+as a wrapper.
+
+### Using keys
+
+Instead of defining a custom component for every entry, you could also use React keys.
+
+```tsx
+import type { JSXElementConstructor, ReactNode } from 'react'
+
+import { Children, isValidElement } from 'react'
+
+export namespace Profile {
+  export interface Props {
+    name: ReactNode
+    children?: ReactNode
+  }
+}
+
+export function Profile({ children, name }: Profile.Props): ReactNode {
+  const sections = new Map<string, ReactNode>()
+
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && typeof child.type === 'function') {
+      sections.set(child.key, child)
+    }
+  })
+
+  return (
+    <main>
+      <h1>{name}</h1>
+      {sections.has('introduction') && <h2>Introduction</h2>}
+      {sections.get('introduction')}
+      {sections.has('hobbies') && <h2>Hobbies</h2>}
+      {sections.get('hobbies')}
+    </main>
+  )
+}
+```
+
+Now in MDX you can use any kind of component as the introduction of hobbies section.
+
+```mdx
+import { Hobbies, Introduction, Profile } from './profile.tsx'
+
+We can use **markdown** here!
+
+<Profile name="Remco">
+  <Fragment key="introduction">
+    I’m a **software developer** from the Netherlands.
+  </Fragment>
+
+  <Fragment key="hobbies">
+    I like listening to **metal** and casually playing **Minecraft**.
+  </Fragment>
+</Profile>
+```
