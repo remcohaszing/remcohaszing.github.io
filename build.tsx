@@ -3,6 +3,7 @@ import { dirname, join, parse, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { compile, type Jsx, run } from '@mdx-js/mdx'
+import { all } from '@wooorm/starry-night'
 import klaw from 'klaw'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 import { renderToString } from 'react-dom/server'
@@ -62,7 +63,7 @@ async function importPage(url: URL, isArticle: boolean): Promise<Page> {
 
   const rehypePlugins: PluggableList = [
     rehypeSlug,
-    rehypeStarryNight,
+    [rehypeStarryNight, { grammars: all }],
     rehypeMdxCodeProps,
     rehypeMdxTitle
   ]
