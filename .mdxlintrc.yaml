@@ -1,0 +1,3 @@
+plugins:
+  - remark-preset-remcohaszing
+  # - [unified-consistency, false]

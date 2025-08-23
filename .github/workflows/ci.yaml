@@ -37,6 +37,15 @@ jobs:
       - run: npm ci
       - run: npx eslint
 
+  mdxlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+      - run: npx mdxlint . -f
+
   prettier:
     runs-on: ubuntu-latest
     steps:
@@ -45,6 +54,15 @@ jobs:
         with: { node-version: 20 }
       - run: npm ci
       - run: npx prettier --check .
+
+  remark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+      - run: npx remark . -f
 
   stylelint:
     runs-on: ubuntu-latest
