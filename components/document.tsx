@@ -5,7 +5,7 @@ import { gravatar } from '../lib/gravatar.js'
 import { formatDate } from '../lib/intl.js'
 import { type Page } from '../lib/types.js'
 
-interface DocumentProps extends Page {
+interface DocumentProps extends Omit<Page, 'default'> {
   /**
    * The content on the page.
    */
@@ -58,11 +58,18 @@ export function Document({ children, isArticle, meta, title, url }: DocumentProp
         <link href={url} rel="canonical" />
       </head>
       <body>
+        <nav className="top-nav">
+          <ul>
+            <li>
+              <a href="/">About</a>
+            </li>
+            <li>
+              <a href="/blog">Blog</a>
+            </li>
+          </ul>
+        </nav>
         {isArticle ? (
           <>
-            <nav>
-              <a href="/">About</a>
-            </nav>
             <main>
               <time className="date" dateTime={meta.created}>
                 {formatDate(meta.created)}

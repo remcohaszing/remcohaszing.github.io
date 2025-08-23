@@ -158,6 +158,30 @@ for (const [path, buffer] of assetMap.values()) {
   await emit(path, buffer)
 }
 
+await emit(
+  'blog.html',
+  `<!doctype html>${renderToString(
+    <Document
+      isArticle={false}
+      meta={{ created: new Date().toISOString(), description: 'Remco’s blog' }}
+      title="Remco’s blog"
+      url={String(new URL('/blog.html', siteUrl))}
+    >
+      <main>
+        <h1>Remco’s blog</h1>
+        <ul>
+          {entries.map((entry) =>
+            entry.isArticle ? (
+              <li key={entry.url}>
+                <a href={new URL(entry.url).pathname}>{entry.title}</a>
+              </li>
+            ) : null
+          )}
+        </ul>
+      </main>
+    </Document>
+  )}`
+)
 await emit('sitemap.xml', toXml(sitemap(entries)))
 await emit(
   'rss.xml',

@@ -7,6 +7,7 @@
   --link-color: #006bb3;
   --terminal-color: #2dc200;
   --text-color: #000;
+  --document-width: 960px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,9 +36,25 @@ html {
 }
 
 body {
-  margin: 0 auto;
-  max-width: 960px;
-  padding: 1rem 1rem 10rem;
+  margin: 0;
+  padding: 0;
+}
+
+.top-nav {
+  background-color: rgb(0 0 0 / 90%);
+
+  & ul {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    max-width: var(--document-width);
+
+    & a {
+      line-height: 3;
+      padding: 1rem;
+    }
+  }
 }
 
 .unified {
@@ -54,9 +71,12 @@ header {
   }
 }
 
-nav {
+.intro-nav {
   display: flex;
   flex-wrap: wrap;
+  margin: 1rem auto;
+  max-width: var(--document-width);
+  padding: 0 1rem;
 
   & > img {
     border-radius: 50%;
@@ -81,6 +101,13 @@ nav {
       }
     }
   }
+}
+
+hr,
+main {
+  margin: 0 auto;
+  max-width: var(--document-width);
+  padding: 0 1rem;
 }
 
 a,
@@ -185,6 +212,10 @@ section {
     &::after {
       content: attr(href);
     }
+  }
+
+  .top-nav {
+    display: none;
   }
 }
 

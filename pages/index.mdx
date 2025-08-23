@@ -8,7 +8,7 @@ import { ProfileLink } from '../components/profile-link.js'
 import { assetLink } from '../lib/asset.js'
 import { gravatar } from '../lib/gravatar.js'
 
-<nav>
+<nav className="intro-nav">
   <img alt="Remco Haszing" height={144} srcSet={`${gravatar(144)},${gravatar(288)} 2x,${gravatar(576)} 4x`} width={144} />
 
   <header>
@@ -25,6 +25,7 @@ import { gravatar } from '../lib/gravatar.js'
   - <ProfileLink icon="stackoverflow" name="StackOverflow" url="https://stackoverflow.com/u/1154610" />
   - <ProfileLink icon="npm" name="npm" url="https://npmjs.com/~remcohaszing" />
   - <ProfileLink icon="gmail" name="remcohaszing@gmail.com" title="Remco’s email address" url="mailto:remcohaszing@gmail.com" />
+
 </nav>
 
 ---
