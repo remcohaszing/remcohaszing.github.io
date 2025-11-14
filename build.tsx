@@ -1,15 +1,20 @@
+import type { Options as RehypeAutolinkHeadingsOptions } from 'rehype-autolink-headings'
+import type { PluggableList } from 'unified'
+import type { Entry as RssEntry } from 'xast-util-feed'
+import type { Entry as SitemapEntry } from 'xast-util-sitemap'
+
+import type { Page } from './lib/types.js'
+
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, parse, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
-import { compile, type Jsx, run } from '@mdx-js/mdx'
+import { compile, run } from '@mdx-js/mdx'
 import { all } from '@wooorm/starry-night'
 import klaw from 'klaw'
-import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
+import * as runtime from 'react/jsx-runtime'
 import { renderToString } from 'react-dom/server'
-import rehypeAutolinkHeadings, {
-  type Options as RehypeAutolinkHeadingsOptions
-} from 'rehype-autolink-headings'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 import rehypeMdxTitle from 'rehype-mdx-title'
 import rehypeSlug from 'rehype-slug'
@@ -17,15 +22,13 @@ import rehypeStarryNight from 'rehype-starry-night'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
-import { type PluggableList } from 'unified'
-import { rss, type Entry as RssEntry } from 'xast-util-feed'
-import { sitemap, type Entry as SitemapEntry } from 'xast-util-sitemap'
+import { rss } from 'xast-util-feed'
+import { sitemap } from 'xast-util-sitemap'
 import { toXml } from 'xast-util-to-xml'
 
 import { CodeBlock } from './components/code-block.js'
 import { Document } from './components/document.js'
 import { assetMap } from './lib/asset.js'
-import { type Page } from './lib/types.js'
 
 type Entry = RssEntry &
   SitemapEntry & {
@@ -92,9 +95,7 @@ async function importPage(url: URL, isArticle: boolean): Promise<Page> {
   )
   return run(code, {
     baseUrl: url,
-    Fragment,
-    jsx: jsx as Jsx,
-    jsxs: jsxs as Jsx
+    ...runtime
   }) as unknown as Promise<Page>
 }
 

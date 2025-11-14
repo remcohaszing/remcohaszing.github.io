@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef, type ReactNode } from 'react'
+import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 
 interface CodeBlockProps extends ComponentPropsWithoutRef<'pre'> {
   /**

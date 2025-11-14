@@ -1,4 +1,9 @@
-import { type MDXContent } from 'mdx/types.js'
+import type { MDXContent } from 'mdx/types.js'
+
+declare module 'mdx/types.js' {
+  // eslint-disable-next-line id-denylist
+  export import JSX = React.JSX
+}
 
 interface Meta {
   /**
