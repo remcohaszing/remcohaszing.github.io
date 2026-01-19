@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "module": "nodenext",
     "moduleDetection": "force",
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2022"
+    "target": "es2022",
+    "verbatimModuleSyntax": true
   },
   "mdx": {
     "checkMdx": true

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { assetLink } from '../lib/asset.js'
+import { assetLink } from '../lib/asset.ts'
 
 interface IconProps {
   /**

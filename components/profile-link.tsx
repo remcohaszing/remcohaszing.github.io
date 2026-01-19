@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Icon } from './icon.js'
+import { Icon } from './icon.tsx'
 
 interface ProfileLinkProps {
   /**

@@ -26,9 +26,9 @@ import { rss } from 'xast-util-feed'
 import { sitemap } from 'xast-util-sitemap'
 import { toXml } from 'xast-util-to-xml'
 
-import { CodeBlock } from './components/code-block.js'
-import { Document } from './components/document.js'
-import { assetMap } from './lib/asset.js'
+import { CodeBlock } from './components/code-block.tsx'
+import { Document } from './components/document.tsx'
+import { assetMap } from './lib/asset.ts'
 
 type Entry = RssEntry &
   SitemapEntry & {

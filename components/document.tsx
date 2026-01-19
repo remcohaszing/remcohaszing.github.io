@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 
-import type { Page } from '../lib/types.js'
+import type { Page } from '../lib/types.ts'
 
-import { assetLink } from '../lib/asset.js'
-import { gravatar } from '../lib/gravatar.js'
-import { formatDate } from '../lib/intl.js'
+import { assetLink } from '../lib/asset.ts'
+import { gravatar } from '../lib/gravatar.ts'
+import { formatDate } from '../lib/intl.ts'
 
 interface DocumentProps extends Omit<Page, 'default'> {
   /**
