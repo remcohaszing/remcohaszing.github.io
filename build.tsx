@@ -7,7 +7,7 @@ import type { Page } from './lib/types.js'
 
 import { cp, glob, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, parse, relative } from 'node:path'
-import { fileURLToPath, pathToFileURL } from 'node:url'
+import { pathToFileURL } from 'node:url'
 
 import { compile, run } from '@mdx-js/mdx'
 import { all } from '@wooorm/starry-night'
@@ -40,9 +40,9 @@ type Entry = RssEntry &
   }
 
 const siteUrl = new URL('https://remcohaszing.nl')
-const distDir = fileURLToPath(new URL('dist', import.meta.url))
-const pagesDir = fileURLToPath(new URL('pages', import.meta.url))
-const publicDir = fileURLToPath(new URL('public', import.meta.url))
+const distDir = join(import.meta.dirname, 'dist')
+const pagesDir = join(import.meta.dirname, 'pages')
+const publicDir = join(import.meta.dirname, 'public')
 const entries: Entry[] = []
 const mdxComponents = { pre: CodeBlock }
 
