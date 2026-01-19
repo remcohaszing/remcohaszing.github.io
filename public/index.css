@@ -204,8 +204,7 @@ section {
     padding: 0;
   }
 
-  a[href^='https://']:has(> span)
-  {
+  a[href^='https://']:has(> span) {
     & > span {
       display: none;
     }
