@@ -13,7 +13,7 @@ import { compile, run } from '@mdx-js/mdx'
 import { all } from '@wooorm/starry-night'
 import klaw from 'klaw'
 import * as runtime from 'react/jsx-runtime'
-import { renderToString } from 'react-dom/server'
+import { renderToStaticMarkup } from 'react-dom/server'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 import rehypeMdxTitle from 'rehype-mdx-title'
@@ -143,10 +143,10 @@ for await (const { path, stats } of klaw(pagesDir, {})) {
       {content}
     </Document>
   )
-  const html = `<!doctype html>${renderToString(document)}`
+  const html = `<!doctype html>${renderToStaticMarkup(document)}`
   entries.push({
     author: 'Remco Haszing',
-    descriptionHtml: renderToString(content),
+    descriptionHtml: renderToStaticMarkup(content),
     isArticle,
     lang: 'en',
     title: module.title,
@@ -161,7 +161,7 @@ for (const [path, buffer] of assetMap.values()) {
 
 await emit(
   'blog.html',
-  `<!doctype html>${renderToString(
+  `<!doctype html>${renderToStaticMarkup(
     <Document
       isArticle={false}
       meta={{ created: new Date().toISOString(), description: 'Remco’s blog' }}
