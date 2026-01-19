@@ -5,13 +5,12 @@ import type { Entry as SitemapEntry } from 'xast-util-sitemap'
 
 import type { Page } from './lib/types.js'
 
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { cp, glob, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, parse, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { compile, run } from '@mdx-js/mdx'
 import { all } from '@wooorm/starry-night'
-import klaw from 'klaw'
 import * as runtime from 'react/jsx-runtime'
 import { renderToStaticMarkup } from 'react-dom/server'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
@@ -121,12 +120,14 @@ async function emit(path: string, content: Buffer | string): Promise<void> {
 
 await rm(distDir, { force: true, recursive: true })
 
-for await (const { path, stats } of klaw(pagesDir, {})) {
+for await (const stats of glob('**/*.mdx', { cwd: pagesDir, withFileTypes: true })) {
   if (!stats.isFile()) {
     continue
   }
 
-  const { dir, name } = parse(relative(pagesDir, path))
+  const dir = stats.parentPath
+  const path = join(dir, stats.name)
+  const { name } = parse(stats.name)
   if (name.startsWith('.')) {
     continue
   }
