@@ -30,7 +30,6 @@ export function Document({ children, isArticle, meta, title, url }: DocumentProp
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
         <meta content="light dark" name="color-scheme" />
         <meta
           content="default-src 'self'; img-src 'self' www.gravatar.com; style-src 'self' 'unsafe-inline'"
