@@ -154,7 +154,7 @@ for await (const stats of glob('**/*.mdx', { cwd: pagesDir, withFileTypes: true 
     title: module.title,
     url
   })
-  await emit(join(dir, `${name}.html`), html)
+  await emit(join(relative(pagesDir, dir), `${name}.html`), html)
 }
 
 for (const [path, buffer] of assetMap.values()) {
