@@ -138,7 +138,7 @@ for await (const stats of glob('**/*.mdx', { cwd: pagesDir, withFileTypes: true 
     new URL(relative(pagesDir, path.replace(/\.mdx$/, '').replace(/\/index$/, '')), siteUrl)
   )
   const importUrl = pathToFileURL(path)
-  const isArticle = dir === 'blog'
+  const isArticle = dir.endsWith('/blog')
 
   const module = await importPage(importUrl, isArticle)
   const content = <module.default components={mdxComponents} />
