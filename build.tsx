@@ -134,7 +134,9 @@ for await (const stats of glob('**/*.mdx', { cwd: pagesDir, withFileTypes: true 
 
   // eslint-disable-next-line no-console
   console.log('Read:', relative(process.cwd(), path))
-  const url = String(new URL(`${dir}/${name.replace(/^index$/, '')}`, siteUrl))
+  const url = String(
+    new URL(relative(pagesDir, path.replace(/\.mdx$/, '').replace(/\/index$/, '')), siteUrl)
+  )
   const importUrl = pathToFileURL(path)
   const isArticle = dir === 'blog'
 
@@ -146,14 +148,16 @@ for await (const stats of glob('**/*.mdx', { cwd: pagesDir, withFileTypes: true 
     </Document>
   )
   const html = `<!doctype html>${renderToStaticMarkup(document)}`
-  entries.push({
-    author: 'Remco Haszing',
-    descriptionHtml: renderToStaticMarkup(content),
-    isArticle,
-    lang: 'en',
-    title: module.title,
-    url
-  })
+  if (name !== '404') {
+    entries.push({
+      author: 'Remco Haszing',
+      descriptionHtml: renderToStaticMarkup(content),
+      isArticle,
+      lang: 'en',
+      title: module.title,
+      url
+    })
+  }
   await emit(join(relative(pagesDir, dir), `${name}.html`), html)
 }
 
