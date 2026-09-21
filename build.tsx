@@ -77,7 +77,7 @@ async function importPage(url: URL, isArticle: boolean): Promise<Page> {
         content: {
           type: 'element',
           tagName: 'span',
-          properties: { ariaHidden: true },
+          properties: { ariaHidden: 'true' },
           children: [{ type: 'text', value: '§ ' }]
         },
         test: ['h2', 'h3', 'h4', 'h5', 'h6']
